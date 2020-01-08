@@ -1,0 +1,110 @@
+{% extends 'shop/basic.html' %}
+{% block css %}
+.col-md-3 {
+display: inline-block;
+margin-left: -4px;
+}
+
+.col-md-3 .vegtag{
+  width: 20px;
+  height : 20px;
+}
+.col-md-3 img{
+width:245px;
+height:220px;
+margin: auto;
+}
+
+.carousel-indicators.active{
+background-color:blue;
+}
+
+body .carousel-indicators li{
+background-color: blue;
+}
+
+body .carousel-indicators {
+bottom:0;
+}
+
+body .carousel-control-prev-icon,
+body .carousel-control-next-icon{
+background-color: blue;
+}
+.carousel-control-prev,
+.carousel-control-next{
+top:auto;
+bottom:auto;
+padding-top: 222px;
+
+}
+
+body .no-padding{
+padding-left: 0;
+padding-right: 0;
+}
+
+mark {
+background-color: #EAFAF1 ;
+border-radius: 5px;
+padding-left: 3px;
+-webkit-border-radius: 5px;
+-moz-border-radius: 5px;
+<!-- #667ecd -->
+}
+
+body {
+background: linear-gradient(180deg,#ffde6f,#ffff80);
+}
+.container.first{
+margin-top:100px;
+}
+{% endblock %}
+
+{% block body %}
+{% load static %}
+
+<div class="container first my-8">
+  {% for i in product %}
+  <div class="row">
+  <div class="col-md-4">
+  <div class="row"><img src="/media/{{i.image}}" width="250px" height="250px"> </div>
+  <div class="row">
+      <button class="btn btn-primary mx-2 my-2">Buy Now</button>
+      <button class="btn btn-primary mx-2 my-2">Add to cart</button>
+  </div>
+  </div>
+  <div class="col-md-8">
+      <h5>{{i.product_name}} <span><img src="https://img.icons8.com/color/48/000000/non-vegetarian-food-symbol.png"></span></h5>
+    <h5><b>Rs {{i.price}}</b></h5>
+    <p>{{i.desc}}</p>
+  </div>
+</div>
+{% endfor %}
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script>
+  if (localStorage.getItem('cart') == null) {
+    var cart = {};
+  } else {
+    cart = JSON.parse(localStorage.getItem('cart'));
+    document.getElementById('cart').innerHTML = Object.keys(cart).length;
+  }
+
+  $('.cart').click(function() {
+    var idstr = this.id.toString();
+    if (cart[idstr] != undefined) {
+      cart[idstr] = cart[idstr] + 1;
+    } else {
+      cart[idstr] = 1;
+    }
+    localStorage.setItem('cart', JSON.stringify(cart));
+  });
+  $('#popcart').popover();
+  document.getElementById("popcart").setAttribute('data-content', '<h5>Food Items in Your Cart</h5>')
+</script>
+
+{% endblock %}

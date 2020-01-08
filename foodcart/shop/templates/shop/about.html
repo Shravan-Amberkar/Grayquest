@@ -1,0 +1,120 @@
+{% extends 'shop/basic.html' %}
+{% load easy_maps_tags %}
+
+{% block css %}
+footer {
+padding-top: 70px;
+background-color: #4b5cc1;
+color: #fff;
+display:block;
+text-color: white;
+}
+.container-full {
+width: 90%;
+max-width: 90%;
+margin: 0 auto;
+}
+
+footer .footer_cols {
+display: flex;
+}
+
+footer .footer_cols .company {
+flex-basis: 30%;
+padding-right: 5rem;
+}
+
+footer .footer_cols .company .logo {
+width: 150px;
+}
+
+footer .footer_cols .info_grid {
+display: flex;
+justify-content: space-between;
+flex-basis: 70%;
+}
+
+footer .f_bottom {
+display: flex;
+justify-content: space-between;
+padding: .7rem 0;
+margin-top: 4rem;
+font-size: .8125rem;
+font-weight: 500;
+line-height: 2;
+text-align: left;
+color: #8495ff;
+border-top: 1px solid #7683d4;
+}
+
+body {
+background: linear-gradient(180deg,#b3b3ff,#9999ff);
+}
+{% endblock %}
+
+{% block title %} About Us{% endblock %}
+{% block body %}
+<main role="main">
+
+  <!-- Main jumbotron for a primary marketing message or call to action -->
+  <div class="jumbotron">
+    <div class="container">
+      <h1 class="display-3 mt-4">FoodCart</h1>
+      <p>Foodcart is India's largest and most valuable online food ordering and delivery platform. Founded in 2014, Foodcart is based out of Bangalore, India and, as of March 2019, was operating out of 100 Indian cities. In early 2019, Foodcart expanded
+        into general product deliveries, under the brand name Foodcart Stores </p>
+      <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
+
+    <h5>Google Map Location: </h5>
+    {% load easy_maps_tags %}
+    {% easy_map "India, Parel, Mumbai-4000012"  300 400 using "easy_maps/map.html" %}
+  </div>
+  </div>
+
+  <hr>
+
+</main>
+<footer>
+  <div class="container-full">
+    <div class="footer_cols">
+      <div class="company">
+        <p>Foodcart Pvt. Ltd provides food with the most convenient and easiest options with superfast delivery and healthy.</p>
+
+      </div>
+      <div class="info_grid">
+        <div class="info">
+          <div class="title">Company</div>
+          <ul>
+            <li><a style="color:white;" href="/shop/about">About us</a></li>
+            <li><a style="color:white;" href="/shop/contact">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="info">
+          <div class="title">GET IN TOUCH</div>
+          <ul>
+            <li><strong>Customer Support:</strong>
+              <span>+000000000</span>
+              <span>(10am - 7pm Mon to Sat)</span>
+            </li>
+            <li class="mt-3"><strong>Email Us:</strong>
+              <span>work@foodcart.com</span>
+            </li>
+          </ul>
+        </div>
+        <div class="info">
+          <div class="title">Registered ADDRESS</div>
+          <ul>
+            <li><span>Bhanduo(east) </span></li>
+            <li><span> Mumbai - 400 042</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="f_bottom">
+      <div>@ 2019 Foodcart Pvt Ltd</div>
+      <div>Terms &amp; Conditions Terms of Use Privacy Policy</div>
+    </div>
+  </div>
+</footer>
+
+{% endblock %}

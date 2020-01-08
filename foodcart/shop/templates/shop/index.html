@@ -1,0 +1,219 @@
+{% extends 'shop/basic.html' %}
+{% block css %}
+.col-md-3 {
+display: inline-block;
+margin-left: -4px;
+}
+
+.col-md-3 .vegtag{
+width: 20px;
+height : 20px;
+}
+
+.col-md-3 img{
+width:245px;
+height:220px;
+margin: auto;
+}
+
+
+.carousel-indicators.active{
+background-color:blue;
+}
+
+body .carousel-indicators li{
+background-color: blue;
+}
+
+body .carousel-indicators {
+bottom:0;
+}
+
+body .carousel-control-prev-icon,
+body .carousel-control-next-icon{
+background-color: blue;
+}
+.carousel-control-prev,
+.carousel-control-next{
+top:auto;
+bottom:auto;
+padding-top: 222px;
+
+}
+
+body .no-padding{
+padding-left: 0;
+padding-right: 0;
+}
+
+mark {
+background-color: #EAFAF1 ;
+border-radius: 5px;
+padding-left: 3px;
+-webkit-border-radius: 5px;
+-moz-border-radius: 5px;
+<!-- #667ecd -->
+}
+
+body {
+background: linear-gradient(180deg,#ffde6f,#ffff80);
+}
+.container.first{
+margin-top:80px;
+}
+.container.timer{
+margin-top:80px;
+font-size: 150%;
+position: relative;
+margin: 80px 40%;
+}
+.container.timer table{
+  border: 3px solid black;
+  padding : 20px;
+}
+
+}
+{% endblock %}
+
+{% block body %}
+{% load static %}
+<div class="container timer">
+  <table>
+    <tr>
+      <td colspan="4"><h1>Mega Sale Timer</h1></td>
+    </tr>
+    <tr>
+      <td id="days"></td>
+      <td id="hours"></td>
+      <td id="minutes"></td>
+      <td id="seconds"></td>
+    </tr>
+    <tr>
+      <td>Days</td>
+      <td>Hours</td>
+      <td>Minutes</td>
+      <td>Seonds</td>
+    </tr>
+  </table>
+
+</div>
+
+
+<div class="container first">
+  <!-- slideshow -->
+  {% for product, range, nSlides in allProds %}
+  <h3 class="my-4"><mark>{{product.0.category}}</mark> - Top Picks For You</h3>
+  <div class="row">
+
+    <div id="demo{{forloop.counter}}" class="col carousel slide my-3 " data-ride="carousel">
+      <ul class="carousel-indicators">
+        <li data-target="#demo{{forloop.counter}}" data-slide-to="0" class='active'></li>
+        {% for i in range %}
+        <li data-target="#demo{{forloop.parentloop.counter}}" data-slide-to="{{i}}"> </li>
+        {% endfor %}
+      </ul>
+
+
+      <div class="container carousel-inner no-padding">
+
+        <div class="carousel-item active ">
+
+          {% for i in product %}
+          <div class="col-xs-3 col-sm-3 col-md-3">
+            <!-- <div class="card-deck"> -->
+            <div class="card border-dark bg-transparent" style="width: 18rem;">
+              <img src='/media/{{i.image}}' class="card-img-top" alt="...">
+              <div class="card-body">
+                {% if i.category == 'Veg' %}
+                <h5 class="card-title">{{i.product_name}} <span><img class="vegtag" src="https://img.icons8.com/color/48/000000/vegetarian-mark.png"></span></h5>
+                {% elif i.category == 'Non-veg' %}
+                <h5 class="card-title">{{i.product_name}} <span><img class="vegtag" src="https://img.icons8.com/color/48/000000/non-vegetarian-food-symbol.png"></span></h5>
+                {% endif %}
+                <p class="card-text">{{i.desc|slice:"0:45"}}...</p>
+                <div class="row">
+                  <div class="col-md-6">
+                    <button id="pr{{i.id}}" class="btn btn-primary cart">Add to Cart</button>
+                  </div>
+                  <div class="col-md-6">
+                    <a href="/shop/products/{{i.id}}"><button id="qv{{i.id}}" class="btn btn-primary cart">Quick View</button></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- </div> -->
+          </div>
+          {% if forloop.counter|divisibleby:4 and forloop.counter > 0 and not forloop.last %}
+
+        </div>
+        <div class="carousel-item">
+          {% endif %}
+
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- left and right controls -->
+    <a class="carousel-control-prev" href="#demo{{forloop.counter}}" data-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+    </a>
+    <a class="carousel-control-next" href="#demo{{forloop.counter}}" data-slide="next">
+      <span class="carousel-control-next-icon"></span>
+    </a>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+  if (localStorage.getItem('cart') == null) {
+    var cart = {};
+  } else {
+    cart = JSON.parse(localStorage.getItem('cart'));
+    document.getElementById('cart').innerHTML = Object.keys(cart).length;
+  }
+
+  $('.cart').click(function() {
+    var idstr = this.id.toString();
+    if (cart[idstr] != undefined) {
+      cart[idstr] = cart[idstr] + 1;
+    } else {
+      cart[idstr] = 1;
+    }
+    localStorage.setItem('cart', JSON.stringify(cart));
+  });
+  $('#popcart').popover();
+  document.getElementById("popcart").setAttribute('data-content', '<h5>Food Items in Your Cart</h5>');
+
+  function countdown(){
+    var now = new Date();
+    var eventDate = new Date(2020, 0, 17);
+
+    var currentTime = now.getTime();
+    var eventTime = eventDate.getTime();
+    var remTime = eventTime - currentTime;
+    var s = Math.floor(remTime/1000);
+    var m = Math.floor(s/60);
+    var h = Math.floor(m/60);
+    var d = Math.floor(h/24);
+
+    h %= 24;
+    m %= 60;
+    s %= 60;
+
+    h = (h < 10) ? "0" + h : h;
+    m = (m < 10) ? "0" + m : m;
+    s = (s < 10) ? "0" + s : s;
+
+    document.getElementById("days").textContent = d;
+    document.getElementById("hours").textContent = h;
+    document.getElementById("minutes").textContent = m;
+    document.getElementById("seconds").textContent = s;
+
+    setTimeout(countdown, 1000);
+  }
+  countdown();
+</script>
+
+{% endblock %}
